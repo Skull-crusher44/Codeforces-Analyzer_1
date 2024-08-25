@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/Codeforces_analyzer/static/css/main.264e5452.chunk.css",
+    "main.js": "/Codeforces_analyzer/static/js/main.c1e6f2c8.chunk.js",
+    "main.js.map": "/Codeforces_analyzer/static/js/main.c1e6f2c8.chunk.js.map",
+    "runtime-main.js": "/Codeforces_analyzer/static/js/runtime-main.9d24722f.js",
+    "runtime-main.js.map": "/Codeforces_analyzer/static/js/runtime-main.9d24722f.js.map",
+    "static/js/2.1625f13c.chunk.js": "/Codeforces_analyzer/static/js/2.1625f13c.chunk.js",
+    "static/js/2.1625f13c.chunk.js.map": "/Codeforces_analyzer/static/js/2.1625f13c.chunk.js.map",
+    "index.html": "/Codeforces_analyzer/index.html",
+    "static/css/main.264e5452.chunk.css.map": "/Codeforces_analyzer/static/css/main.264e5452.chunk.css.map",
+    "static/js/2.1625f13c.chunk.js.LICENSE.txt": "/Codeforces_analyzer/static/js/2.1625f13c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.9d24722f.js",
+    "static/js/2.1625f13c.chunk.js",
+    "static/css/main.264e5452.chunk.css",
+    "static/js/main.c1e6f2c8.chunk.js"
+  ]
+}
