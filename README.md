@@ -1,7 +1,5 @@
 # 📊 Codeforces Analyzer
 
-![Codeforces Analyzer Logo](screenshots/logo.png)
-
 ## 🚀 Elevate Your Competitive Programming Game!
 
 Codeforces Analyzer is a powerful web application that provides in-depth insights and analysis for Codeforces users. Whether you're looking to improve your own performance or compare yourself with friends, our analyzer has got you covered!
@@ -55,7 +53,7 @@ Launch your own instance of Codeforces Analyzer in just a few simple steps:
    npm run dev
    ```
 
-4. **Open your browser** and navigate to `http://localhost:3000/Codeforces-Analyzer`
+4. **Open your browser** and navigate to `http://localhost:3000/Codeforces-Analyzer_1`
 
 ---
 
