@@ -1,7 +1,7 @@
-const { defineConfig } = require('vite');
-const react = require('@vitejs/plugin-react');
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-module.exports = defineConfig({
+export default defineConfig({
   plugins: [react()],
   base: '/Codeforces-Analyzer_1/',
   build: {
@@ -11,4 +11,4 @@ module.exports = defineConfig({
     port: 3000,
     open: true
   }
-});
+})
