@@ -69,7 +69,32 @@ const ProblemRatingGraph = ({userSubmissions}) => {
           },
           legend: {
             display: false
-          }
+          },
+          tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#1f2937',
+                bodyColor: '#374151',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                cornerRadius: 8,
+                displayColors: false,
+                titleFont: {
+                    size: 14,
+                    family: 'Inter, system-ui, sans-serif',
+                    weight: '600'
+                },
+                bodyFont: {
+                    size: 13,
+                    family: 'Inter, system-ui, sans-serif'
+                },
+                padding: 12,
+                caretPadding: 6,
+                callbacks: {
+                    label: function(context) {
+                        return `${context.parsed.y} problems`;
+                    }
+                }
+            }
         },
         responsive: true,
         maintainAspectRatio: false,

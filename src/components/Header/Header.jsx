@@ -1,91 +1,44 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import PersonIcon from '@material-ui/icons/Person';
-import PeopleIcon from '@material-ui/icons/People';
+import { Button } from '../ui/button';
+import { User, Users, BarChart3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        // marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-        // fontSize:12 rem
-    },
-    btn: {
-        marginRight: 20,
-        fontSize: 12,
-        color: 'white',
-    },
-    navLink: {
-        textDecoration: 'none',
-    },
-    active: {
-        backgroundColor: 'red',
-        textDecoration: 'none',
-    },
-    appBar: {
-        transition: 'background-color 0.2s ease',
-    }
-}));
-
 const Header = () => {
-    const classes = useStyles();
-
     return (
-        <div className={`${classes.root} shadow-lg`}>
-            <AppBar 
-                position="static" 
-                className={classes.appBar}
-            >
-                <Toolbar className="container mx-auto px-4">
-                    <Typography variant="h6" className={`${classes.title} md:text-xl`}>
-                        Codeforces Analyzer
-                    </Typography>
-                    <div className="hidden md:flex items-center space-x-2">
-                        <Link to="/Codeforces-Analyzer/" className={classes.navLink}>
-                            <Button 
-                                color="inherit" 
-                                className={`${classes.btn} hover:bg-opacity-20 hover:bg-white transition-colors duration-200`}
-                            >
-                                <PersonIcon className="mr-2" />
-                                Single User
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container flex h-16 items-center">
+                <div className="mr-4 flex">
+                    <Link to="/Codeforces-Analyzer/" className="mr-6 flex items-center space-x-2">
+                        <BarChart3 className="h-6 w-6 text-primary" />
+                        <span className="hidden font-bold sm:inline-block text-xl">
+                            Codeforces Analyzer
+                        </span>
+                        <span className="font-bold sm:hidden text-lg">
+                            CF Analyzer
+                        </span>
+                    </Link>
+                </div>
+                
+                <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+                    <nav className="flex items-center space-x-2">
+                        <Link to="/Codeforces-Analyzer/">
+                            <Button variant="ghost" size="sm" className="w-full justify-start">
+                                <User className="mr-2 h-4 w-4" />
+                                <span className="hidden sm:inline">Single User</span>
+                                <span className="sm:hidden">User</span>
                             </Button>
                         </Link>
-                        <Link to="/Codeforces-Analyzer/versus" className={classes.navLink}>
-                            <Button 
-                                color="inherit" 
-                                className={`${classes.btn} hover:bg-opacity-20 hover:bg-white transition-colors duration-200`}
-                            >
-                                <PeopleIcon className="mr-2" />
-                                Versus
+                        <Link to="/Codeforces-Analyzer/versus">
+                            <Button variant="ghost" size="sm" className="w-full justify-start">
+                                <Users className="mr-2 h-4 w-4" />
+                                <span className="hidden sm:inline">Versus Mode</span>
+                                <span className="sm:hidden">Versus</span>
                             </Button>
                         </Link>
-                    </div>
-                    
-                    {/* Mobile Navigation */}
-                    <div className="md:hidden flex items-center space-x-1">
-                        <Link to="/Codeforces-Analyzer/" className={classes.navLink}>
-                            <Button color="inherit" className="min-w-0 p-2">
-                                <PersonIcon />
-                            </Button>
-                        </Link>
-                        <Link to="/Codeforces-Analyzer/versus" className={classes.navLink}>
-                            <Button color="inherit" className="min-w-0 p-2">
-                                <PeopleIcon />
-                            </Button>
-                        </Link>
-                    </div>
-                </Toolbar>
-            </AppBar>
-        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
     );
 }
 

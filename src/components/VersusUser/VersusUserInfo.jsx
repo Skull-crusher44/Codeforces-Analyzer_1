@@ -1,105 +1,98 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles({
-    table: {},
-    tableContainer: {
-        '@media (min-width: 640px)': {
-            maxWidth: '600px',
-        },
-    },
-    tableHead: {
-        '& th': {
-            backgroundColor: '#8ba3cf',
-            color: 'white',
-        },
-    },
-    tableBody: {
-        '& td, & th': {
-            backgroundColor: '#f0d6f6',
-        },
-    }
-});
-
-const rows = [];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { User, MapPin, TrendingUp, Star, Award } from 'lucide-react';
 
 const VersusUserInfo = ({ userInfo1, userInfo2 }) => {
-    const classes = useStyles();
-
     const createUserData = (userInfo) => ({
         username: userInfo.handle,
-        name: `${userInfo.firstName} ${userInfo.lastName}`,
-        country: userInfo.country,
-        rating: `${userInfo.rating} (${userInfo.rank})`,
-        maxRating: `${userInfo.maxRating} (${userInfo.maxRank})`,
-        contribution: userInfo.contribution
+        name: `${userInfo.firstName || ''} ${userInfo.lastName || ''}`.trim() || 'Not specified',
+        country: userInfo.country || 'Not specified',
+        rating: userInfo.rating || 'Unrated',
+        rank: userInfo.rank || 'Unranked',
+        maxRating: userInfo.maxRating || 'No data',
+        maxRank: userInfo.maxRank || 'No data',
+        contribution: userInfo.contribution || 0
     });
 
     const user1 = createUserData(userInfo1);
     const user2 = createUserData(userInfo2);
 
-    rows.splice(0, rows.length);
-    rows.push({ name: "Name", data1: user1.name, data2: user2.name });
-    rows.push({ name: 'Country', data1: user1.country, data2: user2.country });
-    rows.push({ name: 'Rating', data1: user1.rating, data2: user2.rating });
-    rows.push({ name: 'Max Rating', data1: user1.maxRating, data2: user2.maxRating });
-    rows.push({ name: 'Contribution', data1: user1.contribution, data2: user2.contribution });
+    const UserCard = ({ user, isFirst = false }) => (
+        <div className="space-y-3 sm:space-y-4">
+            {/* Header */}
+            <div className="text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <User className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-foreground truncate">{user.username}</h3>
+                <p className="text-xs text-muted-foreground truncate">{user.name}</p>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="space-y-2 sm:space-y-3">
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <MapPin className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Country</span>
+                    </div>
+                    <span className="text-xs text-foreground truncate max-w-16 sm:max-w-20">{user.country}</span>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <TrendingUp className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Rating</span>
+                    </div>
+                    <div className="text-right">
+                        <div className="text-xs font-bold text-foreground">{user.rating}</div>
+                        <Badge variant="secondary" className="text-xs px-1 py-0 h-4">
+                            {user.rank}
+                        </Badge>
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <Star className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Max</span>
+                    </div>
+                    <div className="text-right">
+                        <div className="text-xs font-bold text-foreground">{user.maxRating}</div>
+                        <Badge variant="outline" className="text-xs px-1 py-0 h-4">
+                            {user.maxRank}
+                        </Badge>
+                    </div>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <Award className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Contrib</span>
+                    </div>
+                    <Badge variant={user.contribution >= 0 ? "default" : "destructive"} className="text-xs px-1 py-0 h-4">
+                        {user.contribution >= 0 ? '+' : ''}{user.contribution}
+                    </Badge>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
-        <div className="p-4 animate-fade-in">
-            <TableContainer 
-                component={Paper} 
-                className={`${classes.tableContainer} shadow-lg rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-xl dark:bg-dark-secondary`}
-            >
-                <Table className={classes.table} aria-label="versus user information table">
-                    <TableHead>
-                        <TableRow className={classes.tableHead}>
-                            <TableCell className="font-semibold text-lg">Info of</TableCell>
-                            <TableCell align="right" className="font-semibold text-lg">
-                                <span className="text-white dark:text-gray-100">{user1.username}</span>
-                            </TableCell>
-                            <TableCell align="right" className="font-semibold text-lg">
-                                <span className="text-white dark:text-gray-100">{user2.username}</span>
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody className={classes.tableBody}>
-                        {rows.map((row) => (
-                            <TableRow 
-                                key={row.name}
-                                className="transition-colors duration-200 hover:bg-opacity-90"
-                            >
-                                <TableCell 
-                                    component="th" 
-                                    scope="row"
-                                    className="font-medium text-gray-800 dark:text-gray-200"
-                                >
-                                    {row.name}
-                                </TableCell>
-                                <TableCell 
-                                    align="right"
-                                    className="text-gray-700 dark:text-gray-300"
-                                >
-                                    {row.data1}
-                                </TableCell>
-                                <TableCell 
-                                    align="right"
-                                    className="text-gray-700 dark:text-gray-300"
-                                >
-                                    {row.data2}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
+        <Card className="animate-fade-in">
+            <CardHeader className="text-center">
+                <CardTitle className="flex items-center justify-center gap-2">
+                    <User className="h-5 w-5 text-primary" />
+                    User Comparison
+                </CardTitle>
+                <CardDescription>Head-to-head user statistics</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <UserCard user={user1} isFirst={true} />
+                    <UserCard user={user2} />
+                </div>
+            </CardContent>
+        </Card>
     );
 };
 

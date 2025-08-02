@@ -1,89 +1,118 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles({
-  table: {},
-  tableContainer: {
-    '@media (min-width: 640px)': {
-      maxWidth: '600px',
-    },
-  },
-  tableHead: {
-    '& th': {
-      backgroundColor: '#8ba3cf',
-      color: 'white',
-    },
-  },
-  tableBody: {
-    '& td, & th': {
-      backgroundColor: '#f0d6f6',
-    },
-  }
-});
-
-const rows = [];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { User, MapPin, Star, TrendingUp } from 'lucide-react';
 
 export default function UserInfo({ userInfo, username }) {
-  const classes = useStyles();
+  const name = `${userInfo.firstName || ''} ${userInfo.lastName || ''}`.trim();
+  const country = userInfo.country || 'Not specified';
+  const rating = userInfo.rating || 0;
+  const rank = userInfo.rank || 'Unrated';
+  const maxRating = userInfo.maxRating || 0;
+  const maxRank = userInfo.maxRank || 'Unrated';
+  const contribution = userInfo.contribution || 0;
 
-  let name = userInfo.firstName + " " + userInfo.lastName;
-  let country = userInfo.country;
-  let rating = userInfo.rating + '(' + userInfo.rank + ')';
-  let maxRating = userInfo.maxRating + '(' + userInfo.maxRank + ')';
-  let contribution = userInfo.contribution;
+  const getRankColor = (rank) => {
+    if (rank.includes('legendary')) return 'text-red-600';
+    if (rank.includes('international grandmaster')) return 'text-red-500';
+    if (rank.includes('grandmaster')) return 'text-red-400';
+    if (rank.includes('international master')) return 'text-orange-500';
+    if (rank.includes('master')) return 'text-orange-400';
+    if (rank.includes('candidate master')) return 'text-purple-500';
+    if (rank.includes('expert')) return 'text-blue-500';
+    if (rank.includes('specialist')) return 'text-cyan-500';
+    if (rank.includes('pupil')) return 'text-green-500';
+    if (rank.includes('newbie')) return 'text-gray-500';
+    return 'text-gray-400';
+  };
 
-  rows.splice(0, rows.length);
-  rows.push({ name: "Name", data: name });
-  rows.push({ name: 'Country', data: country });
-  rows.push({ name: 'Rating', data: rating });
-  rows.push({ name: 'Max Rating', data: maxRating });
-  rows.push({ name: 'Contribution', data: contribution });
+  const getContributionColor = (contribution) => {
+    if (contribution > 0) return 'text-green-600';
+    if (contribution < 0) return 'text-red-600';
+    return 'text-gray-600';
+  };
 
   return (
-    <div className="p-4 animate-fade-in">
-      <TableContainer 
-        component={Paper} 
-        className={`${classes.tableContainer} shadow-lg rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-xl dark:bg-dark-secondary`}
-      >
-        <Table className={classes.table} aria-label="user information table">
-          <TableHead>
-            <TableRow className={classes.tableHead}>
-              <TableCell className="font-semibold text-lg">Info of</TableCell>
-              <TableCell align="right" className="font-semibold text-lg">
-                <span className="text-white dark:text-gray-100">{username}</span>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className={classes.tableBody}>
-            {rows.map((row) => (
-              <TableRow 
-                key={row.name}
-                className="transition-colors duration-200 hover:bg-opacity-90"
-              >
-                <TableCell 
-                  component="th" 
-                  scope="row"
-                  className="font-medium text-gray-800 dark:text-gray-200"
-                >
-                  {row.name}
-                </TableCell>
-                <TableCell 
-                  align="right"
-                  className="text-gray-700 dark:text-gray-300"
-                >
-                  {row.data}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+    <Card className="h-full">
+      <CardHeader className="pb-3">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-primary/10 rounded-full">
+            <User className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <CardTitle className="text-lg">{username}</CardTitle>
+            <CardDescription>User Profile Information</CardDescription>
+          </div>
+        </div>
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        {/* Name */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <span className="text-sm font-medium text-muted-foreground">Name</span>
+          <span className="text-sm font-medium">{name || 'Not available'}</span>
+        </div>
+
+        {/* Country */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <div className="flex items-center space-x-2">
+            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Country</span>
+          </div>
+          <span className="text-sm font-medium">{country}</span>
+        </div>
+
+        {/* Current Rating */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <div className="flex items-center space-x-2">
+            <Star className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Rating</span>
+          </div>
+          <div className="text-right">
+            <div className="text-sm font-bold">{rating}</div>
+            <Badge variant="outline" className={`text-xs ${getRankColor(rank)}`}>
+              {rank}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Max Rating */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <div className="flex items-center space-x-2">
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Max Rating</span>
+          </div>
+          <div className="text-right">
+            <div className="text-sm font-bold">{maxRating}</div>
+            <Badge variant="outline" className={`text-xs ${getRankColor(maxRank)}`}>
+              {maxRank}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Contribution */}
+        <div className="flex items-center justify-between py-2">
+          <span className="text-sm font-medium text-muted-foreground">Contribution</span>
+          <Badge 
+            variant={contribution > 0 ? "default" : contribution < 0 ? "destructive" : "secondary"}
+            className="text-sm"
+          >
+            {contribution > 0 ? '+' : ''}{contribution}
+          </Badge>
+        </div>
+
+        {/* Rating Insight */}
+        {rating > 0 && (
+          <div className="mt-4 p-3 bg-primary/5 rounded-lg">
+            <p className="text-xs text-muted-foreground">
+              💡 <span className="font-medium">Rating Progress:</span> 
+              {maxRating > rating 
+                ? ` Peak rating was ${maxRating - rating} points higher`
+                : ' Currently at peak rating!'
+              }
+            </p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

@@ -40,9 +40,9 @@ const VersusSubmissionsCompare = ({username1,username2,userSubmissions1,userSubm
               'red',
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
+              'rgba(255, 0, 0, 1)',
             ],
-            borderWidth: 2,
+            borderWidth: 0,
           },
           {
             label: username2,
@@ -51,9 +51,9 @@ const VersusSubmissionsCompare = ({username1,username2,userSubmissions1,userSubm
               'blue',
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
+              'rgba(0, 0, 255, 1)',
             ],
-            borderWidth: 2,
+            borderWidth: 0,
           },
         ],
     };

@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Badge } from '../components/ui/badge';
+import { Search, User, Trophy, Target, TrendingUp, Loader2 } from 'lucide-react';
 
 import UserInfo from "../components/UserBio/UserInfo";
 import UserContest from "../components/UserBio/UserContest";
@@ -14,21 +16,7 @@ import ProblemRatingGraph from "../components/ProblemRatingGraph/ProblemRatingGr
 import ProblemIndexGraph from "../components/ProblemIndexGraph/ProblemIndexGraph";
 import Footer from '../components/Footer/Footer';
 
-const useStyles = makeStyles((theme) => ({
-  textField: {
-    '& .MuiOutlinedInput-root': {
-      '&.Mui-focused fieldset': {
-        borderColor: '#8ba3cf',
-      },
-    },
-    '& .MuiInputLabel-outlined.Mui-focused': {
-      color: '#8ba3cf',
-    },
-  },
-}));
-
 const SingleUser = () => {
-    const classes = useStyles();
     let lastName;
 
     const [currname, setCurrname] = useState('');
@@ -69,39 +57,41 @@ const SingleUser = () => {
         
         if (userInfo && username === userInfo.handle) {
             return (
-                <div className="animate-fade-in">
-                    <div className="flex flex-col md:flex-row justify-between w-4/5 mx-auto mt-8 space-y-4 md:space-y-0 md:space-x-4">
-                        <div className="w-full md:w-1/2">
-                            <UserInfo userInfo={userInfo} username={username} />
-                        </div>
-                        <div className="w-full md:w-1/2">
-                            <UserContest userContest={userContest} username={username} />
-                        </div>
+                <div className="animate-fade-in space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <UserInfo userInfo={userInfo} username={username} />
+                        <UserContest userContest={userContest} username={username} />
                     </div>
 
-                    <div className="w-4/5 mx-auto mt-8 bg-[#f0d6f6] rounded-lg shadow-lg">
-                        <RatingGraph userContest={userContest} />
+                    <RatingGraph userContest={userContest} />
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Card>
+                            <CardContent className="p-6">
+                                <ProblemVerdict userSubmissions={userSubmissions} />
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardContent className="p-6">
+                                <ProblemLanguage userSubmissions={userSubmissions} />
+                            </CardContent>
+                        </Card>
                     </div>
 
-                    <div className="flex flex-col md:flex-row justify-between w-4/5 mx-auto mt-8 space-y-4 md:space-y-0 md:space-x-4">
-                        <div className="w-full md:w-1/2 bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <ProblemVerdict userSubmissions={userSubmissions} />
-                        </div>
-                        <div className="w-full md:w-1/2 bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <ProblemLanguage userSubmissions={userSubmissions} />
-                        </div>
-                    </div>
-
-                    <div className="w-4/5 mx-auto mt-8 space-y-8">
-                        <div className="bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <ProblemTagsGraph userSubmissions={userSubmissions} />
-                        </div>
-                        <div className="bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <ProblemIndexGraph userSubmissions={userSubmissions} />
-                        </div>
-                        <div className="bg-[#f0d6f6] rounded-lg shadow-lg p-4 mb-8">
-                            <ProblemRatingGraph userSubmissions={userSubmissions} />
-                        </div>
+                    <div className="space-y-6">
+                        <Card>
+                            <CardContent className="p-6">
+                                <ProblemTagsGraph userSubmissions={userSubmissions} />
+                            </CardContent>
+                        </Card>
+                        
+                        <ProblemIndexGraph userSubmissions={userSubmissions} />
+                        
+                        <Card>
+                            <CardContent className="p-6">
+                                <ProblemRatingGraph userSubmissions={userSubmissions} />
+                            </CardContent>
+                        </Card>
                     </div>
 
                     <Footer />
@@ -112,69 +102,131 @@ const SingleUser = () => {
 
     return (
         <div className="min-h-screen">
-            <div className="text-center py-12 bg-[#f0d6f6]">
-                <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to Codeforces Analyzer</h1>
-                <p className="text-xl text-gray-600 mb-8">Analyze your Codeforces performance and gain valuable insights!</p>
-                <div className="flex justify-center space-x-4">
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-2">User Analysis</h2>
-                        <p>Get detailed statistics about your Codeforces journey</p>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-2">Problem Insights</h2>
-                        <p>Understand your problem-solving patterns</p>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-2">Contest Performance</h2>
-                        <p>Track your progress in Codeforces contests</p>
+            {/* Hero Section */}
+            <div className="relative overflow-hidden bg-gradient-to-br from-primary/10 via-background to-secondary/10 py-16 sm:py-24">
+                <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+                <div className="relative container mx-auto px-4 text-center">
+                    <div className="mx-auto max-w-3xl">
+                        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                            Codeforces Analyzer
+                        </h1>
+                        <p className="mt-6 text-lg leading-8 text-muted-foreground">
+                            Analyze your Codeforces performance and gain valuable insights to improve your competitive programming skills!
+                        </p>
+                        
+                        {/* Feature Cards */}
+                        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
+                            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                                <CardHeader className="text-center pb-4">
+                                    <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                        <User className="h-6 w-6 text-primary" />
+                                    </div>
+                                    <CardTitle className="text-lg">User Analysis</CardTitle>
+                                </CardHeader>
+                                <CardContent className="pt-0">
+                                    <p className="text-sm text-muted-foreground">Detailed statistics about your competitive programming journey</p>
+                                </CardContent>
+                            </Card>
+                            
+                            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                                <CardHeader className="text-center pb-4">
+                                    <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                        <Target className="h-6 w-6 text-primary" />
+                                    </div>
+                                    <CardTitle className="text-lg">Problem Insights</CardTitle>
+                                </CardHeader>
+                                <CardContent className="pt-0">
+                                    <p className="text-sm text-muted-foreground">Understand your problem-solving patterns and preferences</p>
+                                </CardContent>
+                            </Card>
+                            
+                            <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                                <CardHeader className="text-center pb-4">
+                                    <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                        <Trophy className="h-6 w-6 text-primary" />
+                                    </div>
+                                    <CardTitle className="text-lg">Contest Performance</CardTitle>
+                                </CardHeader>
+                                <CardContent className="pt-0">
+                                    <p className="text-sm text-muted-foreground">Track your progress and achievements in contests</p>
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <form 
-                noValidate 
-                autoComplete="on" 
-                onSubmit={handleSubmit} 
-                className="flex flex-col md:flex-row items-center justify-center mt-12 px-4 space-y-4 md:space-y-0 md:space-x-4"
-            >
-                <TextField
-                    className={`w-full md:w-1/3 ${classes.textField}`}
-                    onChange={(e) => setCurrname(e.target.value)}
-                    label="Codeforces Username *"
-                    variant="outlined"
-                    color="primary"
-                    error={!!error}
-                    helperText={error}
-                />
-                <Button
-                    type="submit"
-                    color="secondary"
-                    variant="contained"
-                    disabled={isLoading}
-                    className="h-14 px-8 transition-colors duration-200"
-                >
-                    {isLoading ? 'Loading...' : 'Analyze'}
-                </Button>
-            </form>
-
-            {isLoading && (
-                <div className="flex justify-center mt-8">
-                    <div className="animate-pulse flex space-x-4">
-                        <div className="rounded-full bg-slate-200 h-10 w-10"></div>
-                        <div className="flex-1 space-y-6 py-1">
-                            <div className="h-2 bg-slate-200 rounded"></div>
-                            <div className="space-y-3">
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="h-2 bg-slate-200 rounded col-span-2"></div>
-                                    <div className="h-2 bg-slate-200 rounded col-span-1"></div>
-                                </div>
+            {/* Search Section */}
+            <div className="container mx-auto px-4 py-12">
+                <Card className="mx-auto max-w-md">
+                    <CardHeader>
+                        <CardTitle className="text-center">Enter Username</CardTitle>
+                        <CardDescription className="text-center">
+                            Enter your Codeforces username to get started
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div className="space-y-2">
+                                <Input
+                                    placeholder="Enter Codeforces username"
+                                    value={currname}
+                                    onChange={(e) => setCurrname(e.target.value)}
+                                    className={error ? "border-destructive" : ""}
+                                />
+                                {error && (
+                                    <p className="text-sm text-destructive">{error}</p>
+                                )}
                             </div>
+                            <Button 
+                                type="submit" 
+                                className="w-full" 
+                                disabled={isLoading || !currname.trim()}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        Analyzing...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Search className="mr-2 h-4 w-4" />
+                                        Analyze Profile
+                                    </>
+                                )}
+                            </Button>
+                        </form>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Loading State */}
+            {isLoading && (
+                <div className="container mx-auto px-4 py-8">
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {[...Array(4)].map((_, i) => (
+                                <Card key={i}>
+                                    <CardContent className="p-6">
+                                        <div className="animate-pulse space-y-4">
+                                            <div className="h-4 bg-muted rounded w-3/4"></div>
+                                            <div className="h-4 bg-muted rounded w-1/2"></div>
+                                            <div className="h-32 bg-muted rounded"></div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
                         </div>
                     </div>
                 </div>
             )}
 
-            {!isLoading && username !== lastName && render()}
+            {/* Results */}
+            {!isLoading && username !== lastName && (
+                <div className="container mx-auto px-4 pb-8">
+                    {render()}
+                </div>
+            )}
         </div>
     );
 };

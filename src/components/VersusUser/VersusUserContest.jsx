@@ -1,115 +1,116 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles({
-    table: {},
-    tableContainer: {
-        '@media (min-width: 640px)': {
-            maxWidth: '600px',
-        },
-    },
-    tableHead: {
-        '& th': {
-            backgroundColor: '#8ba3cf',
-            color: 'white',
-        },
-    },
-    tableBody: {
-        '& td, & th': {
-            backgroundColor: '#f0d6f6',
-        },
-    }
-});
-
-const rows = [];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Trophy, TrendingUp, TrendingDown, Calendar, Award } from 'lucide-react';
 
 const VersusUserContest = ({ userContest1, userContest2 }) => {
-    const classes = useStyles();
-    
     let username1 = userContest1.length > 0 ? userContest1[0].handle : '';
     let username2 = userContest2.length > 0 ? userContest2[0].handle : '';
     
     userContest1 = Array.from(userContest1);
     userContest2 = Array.from(userContest2);
 
-    const calculateStats = (contests) => ({
-        bestRank: Math.min(...contests.map(item => item.rank)),
-        worstRank: Math.max(...contests.map(item => item.rank)),
-        maxUp: Math.max(...contests.map(item => item.newRating - item.oldRating)),
-        maxDown: Math.min(...contests.map(item => item.newRating - item.oldRating))
-    });
+    const calculateStats = (contests) => {
+        if (contests.length === 0) {
+            return {
+                bestRank: 'N/A',
+                worstRank: 'N/A',
+                maxUp: 'N/A',
+                maxDown: 'N/A'
+            };
+        }
+        return {
+            bestRank: Math.min(...contests.map(item => item.rank)),
+            worstRank: Math.max(...contests.map(item => item.rank)),
+            maxUp: Math.max(...contests.map(item => item.newRating - item.oldRating)),
+            maxDown: Math.min(...contests.map(item => item.newRating - item.oldRating))
+        };
+    };
 
     const stats1 = calculateStats(userContest1);
     const stats2 = calculateStats(userContest2);
 
-    rows.splice(0, rows.length);
-    rows.push({ name: "No of contests", data1: userContest1.length, data2: userContest2.length });
-    rows.push({ name: 'Best Rank', data1: stats1.bestRank, data2: stats2.bestRank });
-    rows.push({ name: 'Worst Rank', data1: stats1.worstRank, data2: stats2.worstRank });
-    rows.push({ name: 'Max Up', data1: stats1.maxUp, data2: stats2.maxUp });
-    rows.push({ name: 'Max Down', data1: stats1.maxDown, data2: stats2.maxDown });
+    const StatCard = ({ user, stats, isFirst = false }) => (
+        <div className="space-y-3 sm:space-y-4">
+            {/* Header */}
+            <div className="text-center space-y-1 sm:space-y-2">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-primary to-primary/70 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Trophy className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-foreground truncate">{user}</h3>
+                <p className="text-xs text-muted-foreground">Contest Statistics</p>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="space-y-2 sm:space-y-3">
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <Calendar className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Contests</span>
+                    </div>
+                    <Badge variant="secondary" className="text-xs px-1 py-0 h-4 font-bold">
+                        {isFirst ? userContest1.length : userContest2.length}
+                    </Badge>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <Trophy className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Best Rank</span>
+                    </div>
+                    <Badge variant="default" className="text-xs px-1 py-0 h-4 font-bold">
+                        #{stats.bestRank}
+                    </Badge>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <Award className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs font-medium">Worst</span>
+                    </div>
+                    <Badge variant="outline" className="text-xs px-1 py-0 h-4">
+                        #{stats.worstRank}
+                    </Badge>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <TrendingUp className="h-3 w-3 text-green-600" />
+                        <span className="text-xs font-medium">Max Up</span>
+                    </div>
+                    <Badge variant="default" className="text-xs px-1 py-0 h-4 font-bold bg-green-100 text-green-800 hover:bg-green-200">
+                        +{stats.maxUp}
+                    </Badge>
+                </div>
+
+                <div className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                        <TrendingDown className="h-3 w-3 text-red-600" />
+                        <span className="text-xs font-medium">Max Down</span>
+                    </div>
+                    <Badge variant="destructive" className="text-xs px-1 py-0 h-4 font-bold">
+                        {stats.maxDown}
+                    </Badge>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
-        <div className="p-4 animate-fade-in">
-            <TableContainer 
-                component={Paper} 
-                className={`${classes.tableContainer} shadow-lg rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-xl dark:bg-dark-secondary`}
-            >
-                <Table className={classes.table} aria-label="versus contest statistics table">
-                    <TableHead>
-                        <TableRow className={classes.tableHead}>
-                            <TableCell className="font-semibold text-lg">Contests of</TableCell>
-                            <TableCell align="right" className="font-semibold text-lg">
-                                <span className="text-white dark:text-gray-100">{username1}</span>
-                            </TableCell>
-                            <TableCell align="right" className="font-semibold text-lg">
-                                <span className="text-white dark:text-gray-100">{username2}</span>
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody className={classes.tableBody}>
-                        {rows.map((row) => (
-                            <TableRow 
-                                key={row.name}
-                                className="transition-colors duration-200 hover:bg-opacity-90"
-                            >
-                                <TableCell 
-                                    component="th" 
-                                    scope="row"
-                                    className="font-medium text-gray-800 dark:text-gray-200"
-                                >
-                                    {row.name}
-                                </TableCell>
-                                <TableCell 
-                                    align="right"
-                                    className={`text-gray-700 dark:text-gray-300 ${
-                                        row.name === 'Max Up' ? 'text-green-600 dark:text-green-400' :
-                                        row.name === 'Max Down' ? 'text-red-600 dark:text-red-400' : ''
-                                    }`}
-                                >
-                                    {row.data1}
-                                </TableCell>
-                                <TableCell 
-                                    align="right"
-                                    className={`text-gray-700 dark:text-gray-300 ${
-                                        row.name === 'Max Up' ? 'text-green-600 dark:text-green-400' :
-                                        row.name === 'Max Down' ? 'text-red-600 dark:text-red-400' : ''
-                                    }`}
-                                >
-                                    {row.data2}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
+        <Card className="animate-fade-in">
+            <CardHeader className="text-center">
+                <CardTitle className="flex items-center justify-center gap-2">
+                    <Trophy className="h-5 w-5 text-primary" />
+                    Contest Statistics
+                </CardTitle>
+                <CardDescription>Performance comparison in contests</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <StatCard user={username1} stats={stats1} isFirst={true} />
+                    <StatCard user={username2} stats={stats2} />
+                </div>
+            </CardContent>
+        </Card>
     );
 };
 

@@ -1,92 +1,122 @@
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-
-const useStyles = makeStyles({
-  table: {},
-  tableContainer: {
-    '@media (min-width: 640px)': {
-      maxWidth: '600px',
-    },
-  },
-  tableHead: {
-    '& th': {
-      backgroundColor: '#8ba3cf',
-      color: 'white',
-    },
-  },
-  tableBody: {
-    '& td, & th': {
-      backgroundColor: '#f0d6f6',
-    },
-  }
-});
-
-const rows = [];
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Trophy, TrendingUp, TrendingDown, Target, Calendar } from 'lucide-react';
 
 export default function UserContest({ userContest, username }) {
-  const classes = useStyles();
+  const contestArray = Array.from(userContest);
+  
+  if (contestArray.length === 0) {
+    return (
+      <Card className="h-full">
+        <CardHeader>
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-secondary/10 rounded-full">
+              <Trophy className="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <CardTitle className="text-lg">Contest Statistics</CardTitle>
+              <CardDescription>Contest participation data</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <p className="text-center text-muted-foreground">No contest data available</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
-  userContest = Array.from(userContest);
-  let bestRank = Math.min.apply(null, userContest.map(item => item.rank));
-  let worstRank = Math.max.apply(null, userContest.map(item => item.rank));
-  let maxUp = Math.max.apply(null, userContest.map(item => item.newRating - item.oldRating));
-  let maxDown = Math.min.apply(null, userContest.map(item => item.newRating - item.oldRating));
+  const bestRank = Math.min(...contestArray.map(item => item.rank));
+  const worstRank = Math.max(...contestArray.map(item => item.rank));
+  const maxUp = Math.max(...contestArray.map(item => item.newRating - item.oldRating));
+  const maxDown = Math.min(...contestArray.map(item => item.newRating - item.oldRating));
+  const totalContests = contestArray.length;
 
-  rows.splice(0, rows.length);
-  rows.push({ name: "No of contests", data: userContest.length });
-  rows.push({ name: 'Best Rank', data: bestRank });
-  rows.push({ name: 'Worst Rank', data: worstRank });
-  rows.push({ name: 'Max Up', data: maxUp });
-  rows.push({ name: 'Max Down', data: maxDown });
+  const getPerformanceColor = (value, type) => {
+    if (type === 'up') return 'text-green-600 bg-green-50';
+    if (type === 'down') return 'text-red-600 bg-red-50';
+    return 'text-blue-600 bg-blue-50';
+  };
 
   return (
-    <div className="p-4 animate-fade-in">
-      <TableContainer 
-        component={Paper} 
-        className={`${classes.tableContainer} shadow-lg rounded-lg overflow-hidden transition-shadow duration-300 hover:shadow-xl dark:bg-dark-secondary`}
-      >
-        <Table className={classes.table} aria-label="contest statistics table">
-          <TableHead>
-            <TableRow className={classes.tableHead}>
-              <TableCell className="font-semibold text-lg">Contests of</TableCell>
-              <TableCell align="right" className="font-semibold text-lg">
-                <span className="text-white dark:text-gray-100">{username}</span>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody className={classes.tableBody}>
-            {rows.map((row) => (
-              <TableRow 
-                key={row.name}
-                className="transition-colors duration-200 hover:bg-opacity-90"
-              >
-                <TableCell 
-                  component="th" 
-                  scope="row"
-                  className="font-medium text-gray-800 dark:text-gray-200"
-                >
-                  {row.name}
-                </TableCell>
-                <TableCell 
-                  align="right"
-                  className={`text-gray-700 dark:text-gray-300 ${
-                    row.name === 'Max Up' ? 'text-green-600 dark:text-green-400' :
-                    row.name === 'Max Down' ? 'text-red-600 dark:text-red-400' : ''
-                  }`}
-                >
-                  {row.data}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+    <Card className="h-full">
+      <CardHeader className="pb-3">
+        <div className="flex items-center space-x-3">
+          <div className="p-2 bg-secondary/10 rounded-full">
+            <Trophy className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <CardTitle className="text-lg">Contest Statistics</CardTitle>
+            <CardDescription>Performance in {totalContests} contests</CardDescription>
+          </div>
+        </div>
+      </CardHeader>
+      
+      <CardContent className="space-y-4">
+        {/* Total Contests */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <div className="flex items-center space-x-2">
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Contests</span>
+          </div>
+          <Badge variant="outline" className="text-sm font-bold">
+            {totalContests}
+          </Badge>
+        </div>
+
+        {/* Best Rank */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <div className="flex items-center space-x-2">
+            <Target className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Best Rank</span>
+          </div>
+          <Badge variant="outline" className="text-sm font-bold text-green-600">
+            #{bestRank}
+          </Badge>
+        </div>
+
+        {/* Worst Rank */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <span className="text-sm font-medium text-muted-foreground">Worst Rank</span>
+          <Badge variant="outline" className="text-sm font-bold text-orange-600">
+            #{worstRank}
+          </Badge>
+        </div>
+
+        {/* Max Rating Increase */}
+        <div className="flex items-center justify-between py-2 border-b border-border/50">
+          <div className="flex items-center space-x-2">
+            <TrendingUp className="h-4 w-4 text-green-600" />
+            <span className="text-sm font-medium text-muted-foreground">Max Increase</span>
+          </div>
+          <Badge className="text-sm font-bold bg-green-100 text-green-700 hover:bg-green-100">
+            +{maxUp}
+          </Badge>
+        </div>
+
+        {/* Max Rating Decrease */}
+        <div className="flex items-center justify-between py-2">
+          <div className="flex items-center space-x-2">
+            <TrendingDown className="h-4 w-4 text-red-600" />
+            <span className="text-sm font-medium text-muted-foreground">Max Decrease</span>
+          </div>
+          <Badge variant="destructive" className="text-sm font-bold">
+            {maxDown}
+          </Badge>
+        </div>
+
+        {/* Performance Insights */}
+        <div className="mt-4 p-3 bg-secondary/5 rounded-lg">
+          <p className="text-xs text-muted-foreground">
+            💡 <span className="font-medium">Performance Insights:</span>
+          </p>
+          <ul className="text-xs text-muted-foreground mt-1 space-y-1">
+            <li>• Rank range: #{bestRank} - #{worstRank}</li>
+            <li>• Rating volatility: {maxUp - maxDown} points</li>
+            <li>• Average contests help improve consistency</li>
+          </ul>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

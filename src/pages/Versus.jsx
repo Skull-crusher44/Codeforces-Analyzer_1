@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { Users, TrendingUp, Target, BarChart3, Loader2 } from 'lucide-react';
 
 import VersusRatingGraph from "../components/VersusRatingGraph/VersusRatingGraph";
 import VersusCommonContest from "../components/VersusCommonContest/VersusCommonContest";
@@ -14,21 +15,7 @@ import VersusSubmissionsCompare from "../components/VersusSubmissionsCompare/Ver
 import VersusCommonPie from "../components/VersusCommonContest/VersusCommonPie";
 import Footer from '../components/Footer/Footer';
 
-const useStyles = makeStyles((theme) => ({
-    textField: {
-        '& .MuiOutlinedInput-root': {
-            '&.Mui-focused fieldset': {
-                borderColor: '#8ba3cf',
-            },
-        },
-        '& .MuiInputLabel-outlined.Mui-focused': {
-            color: '#8ba3cf',
-        },
-    },
-}));
-
 const Versus = () => {
-    const classes = useStyles();
     const [currname1, setCurrname1] = useState('');
     const [username1, setUsername1] = useState('');
     const [userInfo1, setUserInfo1] = useState('');
@@ -81,53 +68,113 @@ const Versus = () => {
         if (userInfo1 && username1 === userInfo1.handle && userInfo2 && username2 === userInfo2.handle) {
             return (
                 <div className="animate-fade-in">
-                    <div className="flex flex-col lg:flex-row justify-between w-4/5 mx-auto mt-8 space-y-4 lg:space-y-0 lg:space-x-4">
-                        <div className="w-full lg:w-1/2">
-                            <VersusUserInfo userInfo1={userInfo1} userInfo2={userInfo2} />
-                        </div>
-                        <div className="w-full lg:w-1/2">
-                            <VersusUserContest userContest1={userContest1} userContest2={userContest2} />
-                        </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl mx-auto mt-8 px-4">
+                        <Card>
+                            <CardContent className="p-0">
+                                <VersusUserInfo userInfo1={userInfo1} userInfo2={userInfo2} />
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardContent className="p-0">
+                                <VersusUserContest userContest1={userContest1} userContest2={userContest2} />
+                            </CardContent>
+                        </Card>
                     </div>
 
-                    <div className="w-4/5 mx-auto mt-8 bg-[#f0d6f6] rounded-lg shadow-lg">
-                        <VersusRatingGraph userContest1={userContest1} userContest2={userContest2} />
+                    <div className="w-full max-w-7xl mx-auto mt-8 px-4">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <TrendingUp className="h-5 w-5 text-primary" />
+                                    Rating Comparison
+                                </CardTitle>
+                                <CardDescription>Compare rating progression over time</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <VersusRatingGraph userContest1={userContest1} userContest2={userContest2} />
+                            </CardContent>
+                        </Card>
                     </div>
 
-                    <div className="flex flex-col lg:flex-row justify-between w-4/5 mx-auto mt-8 space-y-4 lg:space-y-0 lg:space-x-4">
-                        <div className="w-full lg:w-1/2 bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <VersusCommonPie userContest1={userContest1} userContest2={userContest2} />
-                        </div>
-                        <div className="w-full lg:w-1/2 bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <VersusSubmissionsCompare 
-                                userSubmissions1={userSubmissions1} 
-                                userSubmissions2={userSubmissions2} 
-                                username1={username1} 
-                                username2={username2} 
-                            />
-                        </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-7xl mx-auto mt-8 px-4">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <BarChart3 className="h-5 w-5 text-primary" />
+                                    Common Contests
+                                </CardTitle>
+                                <CardDescription>Performance comparison in shared contests</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <VersusCommonPie userContest1={userContest1} userContest2={userContest2} />
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Target className="h-5 w-5 text-primary" />
+                                    Submission Patterns
+                                </CardTitle>
+                                <CardDescription>Compare submission statistics</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <VersusSubmissionsCompare 
+                                    userSubmissions1={userSubmissions1} 
+                                    userSubmissions2={userSubmissions2} 
+                                    username1={username1} 
+                                    username2={username2} 
+                                />
+                            </CardContent>
+                        </Card>
                     </div>
 
-                    <div className="w-4/5 mx-auto mt-8 space-y-8">
-                        <div className="bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <VersusProblemIndexGraph 
-                                userSubmissions1={userSubmissions1} 
-                                userSubmissions2={userSubmissions2} 
-                                username1={username1} 
-                                username2={username2} 
-                            />
-                        </div>
-                        <div className="bg-[#f0d6f6] rounded-lg shadow-lg p-4">
-                            <VersusProblemRatingGraph 
-                                userSubmissions1={userSubmissions1} 
-                                userSubmissions2={userSubmissions2} 
-                                username1={username1} 
-                                username2={username2} 
-                            />
-                        </div>
-                        <div className="bg-[#f0d6f6] rounded-lg shadow-lg p-4 mb-8">
-                            <VersusCommonContest userContest1={userContest1} userContest2={userContest2} />
-                        </div>
+                    <div className="space-y-6 w-full max-w-7xl mx-auto mt-8 px-4">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <BarChart3 className="h-5 w-5 text-primary" />
+                                    Problem Index Distribution
+                                </CardTitle>
+                                <CardDescription>Compare problem difficulty preferences</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <VersusProblemIndexGraph 
+                                    userSubmissions1={userSubmissions1} 
+                                    userSubmissions2={userSubmissions2} 
+                                    username1={username1} 
+                                    username2={username2} 
+                                />
+                            </CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <TrendingUp className="h-5 w-5 text-primary" />
+                                    Problem Rating Analysis
+                                </CardTitle>
+                                <CardDescription>Compare problem rating distribution</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <VersusProblemRatingGraph 
+                                    userSubmissions1={userSubmissions1} 
+                                    userSubmissions2={userSubmissions2} 
+                                    username1={username1} 
+                                    username2={username2} 
+                                />
+                            </CardContent>
+                        </Card>
+                        <Card className="mb-8">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Users className="h-5 w-5 text-primary" />
+                                    Contest Performance
+                                </CardTitle>
+                                <CardDescription>Detailed contest comparison and statistics</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <VersusCommonContest userContest1={userContest1} userContest2={userContest2} />
+                            </CardContent>
+                        </Card>
                     </div>
 
                     <Footer />
@@ -137,81 +184,145 @@ const Versus = () => {
     }
 
     return (
-        <div className="min-h-screen">
-            <div className="text-center py-12 bg-[#f0d6f6]">
-                <h1 className="text-4xl font-bold text-gray-800 mb-4">Codeforces Analyzer: Versus Mode</h1>
-                <p className="text-xl text-gray-600 mb-8">Compare two Codeforces users and gain valuable insights!</p>
-                <div className="flex justify-center space-x-4">
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-2">Head-to-Head Comparison</h2>
-                        <p>Compare user statistics and performance</p>
+        <div className="min-h-screen bg-background">
+            {/* Hero Section */}
+            <div className="relative bg-gradient-to-br from-primary/10 via-primary/5 to-background py-16 px-4">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
+                <div className="relative max-w-7xl mx-auto text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium mb-6">
+                        <Users className="h-4 w-4" />
+                        Compare & Analyze
                     </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-2">Common Contests</h2>
-                        <p>Analyze performance in shared contests</p>
-                    </div>
-                    <div className="bg-white p-4 rounded-lg shadow-md">
-                        <h2 className="text-2xl font-semibold mb-2">Problem Solving Patterns</h2>
-                        <p>Compare problem-solving strategies</p>
+                    <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
+                        Codeforces Analyzer
+                        <span className="block text-primary">Versus Mode</span>
+                    </h1>
+                    <p className="text-xl text-muted-foreground mb-12 max-w-3xl mx-auto">
+                        Compare two Codeforces users side by side and discover detailed insights about their competitive programming journey!
+                    </p>
+                    
+                    {/* Feature Cards */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                        <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                            <CardHeader className="text-center pb-4">
+                                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                    <Users className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-lg">Head-to-Head Comparison</CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                                <p className="text-sm text-muted-foreground">Compare user statistics and performance metrics</p>
+                            </CardContent>
+                        </Card>
+                        
+                        <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                            <CardHeader className="text-center pb-4">
+                                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                    <BarChart3 className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-lg">Common Contests</CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                                <p className="text-sm text-muted-foreground">Analyze performance in shared contests</p>
+                            </CardContent>
+                        </Card>
+                        
+                        <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+                            <CardHeader className="text-center pb-4">
+                                <div className="mx-auto w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                                    <Target className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-lg">Problem Solving Patterns</CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-0">
+                                <p className="text-sm text-muted-foreground">Compare problem-solving strategies</p>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </div>
 
-            <form 
-                noValidate 
-                autoComplete="on" 
-                onSubmit={handleSubmitVersus} 
-                className="flex flex-col items-center mt-12 px-4 space-y-4"
-            >
-                <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-                    <TextField
-                        className={`w-full md:w-64 ${classes.textField}`}
-                        onChange={(e) => setCurrname1(e.target.value)}
-                        label="First Username *"
-                        variant="outlined"
-                        color="primary"
-                        error={!!error}
-                    />
-                    <TextField
-                        className={`w-full md:w-64 ${classes.textField}`}
-                        onChange={(e) => setCurrname2(e.target.value)}
-                        label="Second Username *"
-                        variant="outlined"
-                        color="primary"
-                        error={!!error}
-                    />
-                </div>
-                
-                {error && (
-                    <div className="text-red-500 text-sm mt-2">
-                        {error}
-                    </div>
-                )}
+            {/* Search Section */}
+            <div className="py-12 px-4">
+                <div className="max-w-2xl mx-auto">
+                    <Card className="border-2 border-dashed border-border/50 bg-card/30 backdrop-blur-sm">
+                        <CardHeader className="text-center pb-4">
+                            <CardTitle className="flex items-center justify-center gap-2">
+                                <Users className="h-5 w-5 text-primary" />
+                                Compare Users
+                            </CardTitle>
+                            <CardDescription>Enter two Codeforces usernames to start comparison</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={handleSubmitVersus} className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">First Username</label>
+                                        <Input
+                                            placeholder="e.g., tourist"
+                                            value={currname1}
+                                            onChange={(e) => setCurrname1(e.target.value)}
+                                            className={error ? "border-destructive" : ""}
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-medium text-foreground">Second Username</label>
+                                        <Input
+                                            placeholder="e.g., jiangly"
+                                            value={currname2}
+                                            onChange={(e) => setCurrname2(e.target.value)}
+                                            className={error ? "border-destructive" : ""}
+                                            disabled={isLoading}
+                                        />
+                                    </div>
+                                </div>
+                                
+                                {error && (
+                                    <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
+                                        <p className="text-sm text-destructive">{error}</p>
+                                    </div>
+                                )}
 
-                <Button
-                    type="submit"
-                    color="secondary"
-                    variant="contained"
-                    disabled={isLoading}
-                    className="h-14 px-8 min-w-[200px] transition-colors duration-200"
-                >
-                    {isLoading ? 'Loading...' : 'Compare'}
-                </Button>
-            </form>
+                                <Button
+                                    type="submit"
+                                    className="w-full h-12 text-base font-medium"
+                                    disabled={isLoading || !currname1.trim() || !currname2.trim()}
+                                >
+                                    {isLoading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Analyzing...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Users className="mr-2 h-4 w-4" />
+                                            Compare Users
+                                        </>
+                                    )}
+                                </Button>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
 
             {isLoading && (
-                <div className="flex justify-center mt-8">
-                    <div className="animate-pulse flex space-x-4">
-                        <div className="rounded-full bg-slate-200 h-10 w-10"></div>
-                        <div className="flex-1 space-y-6 py-1">
-                            <div className="h-2 bg-slate-200 rounded"></div>
-                            <div className="space-y-3">
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="h-2 bg-slate-200 rounded col-span-2"></div>
-                                    <div className="h-2 bg-slate-200 rounded col-span-1"></div>
+                <div className="py-12 px-4">
+                    <div className="max-w-4xl mx-auto">
+                        <Card>
+                            <CardContent className="py-12">
+                                <div className="flex flex-col items-center space-y-4">
+                                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                    <div className="text-center space-y-2">
+                                        <h3 className="text-lg font-medium">Analyzing Users</h3>
+                                        <p className="text-sm text-muted-foreground">
+                                            Fetching user data and preparing comparison...
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             )}

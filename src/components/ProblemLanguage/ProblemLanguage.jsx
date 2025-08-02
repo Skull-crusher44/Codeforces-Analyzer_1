@@ -56,6 +56,33 @@ const ProblemLanguage = ({ userSubmissions }) => {
             title: {
                 display: true,
                 text: 'Languages'
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#1f2937',
+                bodyColor: '#374151',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                cornerRadius: 8,
+                displayColors: true,
+                titleFont: {
+                    size: 14,
+                    family: 'Inter, system-ui, sans-serif',
+                    weight: '600'
+                },
+                bodyFont: {
+                    size: 13,
+                    family: 'Inter, system-ui, sans-serif'
+                },
+                padding: 12,
+                caretPadding: 6,
+                callbacks: {
+                    label: function(context) {
+                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = ((context.parsed / total) * 100).toFixed(1);
+                        return `${context.label}: ${context.parsed} submissions (${percentage}%)`;
+                    }
+                }
             }
         },
     };

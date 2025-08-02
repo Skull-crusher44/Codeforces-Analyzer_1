@@ -63,9 +63,9 @@ const VersusProblemIndexGraph = ({userSubmissions1,userSubmissions2,username1,us
               'red',
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
+              'rgba(255, 0, 0, 1)',
             ],
-            borderWidth: 2,
+            borderWidth: 0,
           },
           {
             label: username2,
@@ -74,7 +74,7 @@ const VersusProblemIndexGraph = ({userSubmissions1,userSubmissions2,username1,us
               'blue',
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
+              'rgba(0, 0, 255, 1)',
             ],
             borderWidth: 2,
           },
@@ -105,7 +105,32 @@ const VersusProblemIndexGraph = ({userSubmissions1,userSubmissions2,username1,us
           title: {
               display: true,
               text: 'Problem Index'
-          }
+          },
+          tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#1f2937',
+                bodyColor: '#374151',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                cornerRadius: 8,
+                displayColors: true,
+                titleFont: {
+                    size: 14,
+                    family: 'Inter, system-ui, sans-serif',
+                    weight: '600'
+                },
+                bodyFont: {
+                    size: 13,
+                    family: 'Inter, system-ui, sans-serif'
+                },
+                padding: 12,
+                caretPadding: 6,
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ${context.parsed.y} problems`;
+                    }
+                }
+            }
         },
         responsive: true,
         maintainAspectRatio: false,

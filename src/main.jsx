@@ -3,6 +3,32 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
+// Chart.js registration
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  LineElement,
+  PointElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 // Dark mode initialization
 const initializeDarkMode = () => {
   // Check for system preference

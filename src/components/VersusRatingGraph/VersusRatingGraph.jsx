@@ -92,6 +92,31 @@ const VersusRatingGraph = ({userContest1,userContest2}) => {
             title: {
                 display: true,
                 text: 'Rating Graph'
+            },
+            tooltip: {
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                titleColor: '#1f2937',
+                bodyColor: '#374151',
+                borderColor: '#e5e7eb',
+                borderWidth: 1,
+                cornerRadius: 8,
+                displayColors: true,
+                titleFont: {
+                    size: 14,
+                    family: 'Inter, system-ui, sans-serif',
+                    weight: '600'
+                },
+                bodyFont: {
+                    size: 13,
+                    family: 'Inter, system-ui, sans-serif'
+                },
+                padding: 12,
+                caretPadding: 6,
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ${context.parsed.y}`;
+                    }
+                }
             }
         },
         animation: {
