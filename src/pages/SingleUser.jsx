@@ -169,7 +169,7 @@ const SingleUser = () => {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Input
-                                    placeholder="Enter Codeforces username"
+                                    placeholder="Enter Codeforces username eg. tourist"
                                     value={currname}
                                     onChange={(e) => setCurrname(e.target.value)}
                                     className={error ? "border-destructive" : ""}
