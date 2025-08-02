@@ -1,14 +1,12 @@
 # 📊 Codeforces Analyzer
 
-![Codeforces Analyzer Logo](screenshots/logo.png)
-
 ## 🚀 Elevate Your Competitive Programming Game!
 
 Codeforces Analyzer is a powerful web application that provides in-depth insights and analysis for Codeforces users. Whether you're looking to improve your own performance or compare yourself with friends, our analyzer has got you covered!
 
-[![GitHub license](https://img.shields.io/github/license/yourusername/Codeforces-Analyzer.svg)](https://github.com/yourusername/Codeforces-Analyzer/blob/master/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/Codeforces-Analyzer.svg)](https://github.com/yourusername/Codeforces-Analyzer/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/yourusername/Codeforces-Analyzer.svg)](https://github.com/yourusername/Codeforces-Analyzer/issues)
+[![GitHub license](https://img.shields.io/github/license/Skull-crusher44/Codeforces-Analyzer_1.svg)](https://github.com/Skull-crusher44/Codeforces-Analyzer_1/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/Skull-crusher44/Codeforces-Analyzer_1.svg)](https://github.com/Skull-crusher44/Codeforces-Analyzer_1/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/Skull-crusher44/Codeforces-Analyzer_1.svg)](https://github.com/Skull-crusher44/Codeforces-Analyzer_1/issues)
 
 ---
 
@@ -41,8 +39,8 @@ Launch your own instance of Codeforces Analyzer in just a few simple steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/Codeforces-Analyzer.git
-   cd Codeforces-Analyzer
+   git clone https://github.com/Skull-crusher44/Codeforces-Analyzer_1.git
+   cd Codeforces-Analyzer_1
    ```
 
 2. **Install dependencies:**
@@ -63,7 +61,7 @@ Launch your own instance of Codeforces Analyzer in just a few simple steps:
 
 - ⚛️ [React](https://reactjs.org/) - A JavaScript library for building user interfaces
 - ⚡ [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
-- 🎨 [Material-UI](https://material-ui.com/) - React components for faster and easier web development
+- 🎨 [Shadcn UI](https://ui.shadcn.com/) - Beautifully designed components built with Radix UI and Tailwind CSS
 - 💨 [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
 - 📊 [Chart.js](https://www.chartjs.org/) - Simple yet flexible JavaScript charting for designers & developers
 
